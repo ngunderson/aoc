@@ -27,6 +27,67 @@ impl Dial {
     }
 }
 
+struct DialPt2
+{
+    position : i32,
+    zero_count : i32,
+}
+
+impl DialPt2 {
+    fn new() -> DialPt2 {
+        return DialPt2 {
+            position : 50,
+            zero_count : 0,
+        };
+    }
+
+    const DIAL_POSITIONS : i32 = 100;
+
+    fn right_rotate(&mut self, amount : i32) {
+        assert!(amount != 0, "amount 0!");
+
+        let prev_position = self.position;
+
+        // Update the dial position
+        self.position = (self.position + amount) % Self::DIAL_POSITIONS;
+
+        // Increment zero count for each full rotation of the dial
+        self.zero_count += amount / Self::DIAL_POSITIONS;
+
+        // Calculate the remaining amount to move the dial
+        let remaing_amount = amount % Self::DIAL_POSITIONS;
+
+        // If the remainder moves the dial past 0, increment the zero count
+        if (prev_position + remaing_amount) >= Self::DIAL_POSITIONS {
+            self.zero_count += 1;
+        }
+    }
+
+    fn left_rotate(&mut self, amount : i32) {
+        assert!(amount != 0, "amount 0!");
+
+        let prev_position = self.position;
+
+        // Update the dial position
+        self.position = (self.position - amount) % Self::DIAL_POSITIONS;
+
+        if self.position < 0 {
+            self.position = Self::DIAL_POSITIONS + self.position;
+        }
+
+        // Increment zero count for each full rotation of the dial
+        self.zero_count += amount / Self::DIAL_POSITIONS;
+
+        // Calculate the remaining amount to move the dial
+        let remaining_amount = amount % Self::DIAL_POSITIONS;
+
+        // If the remainder moves the dial past 0, increment the zero count
+        if (prev_position - remaining_amount) < 0 {
+            self.zero_count += 1;
+        }
+    }
+}
+
 fn main() {
     println!("Hello, advent of code!");
 
@@ -34,15 +95,18 @@ fn main() {
         .expect("file not read!");
 
     let mut dial = Dial::new();
+    let mut dial_pt2 = DialPt2::new();
     let mut result = 0;
 
     for (index, line) in rotation_codes.lines().enumerate() {
         if line.starts_with("R") {
             let right_code: i32 = line[1..].parse().expect(&format!("code not found! {index}"));
             dial.right_rotate(right_code);
+            dial_pt2.right_rotate(right_code);
         } else if line.starts_with("L") {
             let left_code: i32 = line[1..].parse().expect(&format!("code not found! {index}"));
             dial.left_rotate(left_code);
+            dial_pt2.left_rotate(left_code);
         } else if line.is_empty() {
             // ignore empty
         } else {
@@ -54,6 +118,7 @@ fn main() {
         }
     }
 
-    println!("result is {}", result);
+    println!("part 1 result is {}", result);
+    println!("part 2 result is {}", dial_pt2.zero_count);
 
 }
