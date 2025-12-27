@@ -57,15 +57,17 @@ impl DialPt2 {
         // Calculate the remaining amount to move the dial
         let remaining_amount = amount % Self::DIAL_POSITIONS;
 
-        // If the remainder moves the dial past 0 in either direction, 
+        // If the remainder moves the dial to or past 0 in either direction, 
         // increment the zero count
         if (prev_position + remaining_amount) >= Self::DIAL_POSITIONS {
             self.zero_count += 1;
-        } else if (prev_position + remaining_amount) < 0 {
+        } else if (prev_position + remaining_amount) <= 0 {
             self.zero_count += 1;
         } else {
             // value did not pass 0, do nothing
         }
+
+        //println!("amount({}), prev({}), new({}), cnt({})", amount, prev_position, self.position, self.zero_count);
     }
 }
 
