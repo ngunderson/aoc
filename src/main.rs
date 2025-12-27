@@ -39,33 +39,13 @@ impl DialPt2 {
 
     const DIAL_POSITIONS : i32 = 100;
 
-    fn right_rotate(&mut self, amount : i32) {
+    fn rotate(&mut self, amount : i32) {
         assert!(amount != 0, "amount 0!");
 
         let prev_position = self.position;
 
         // Update the dial position
         self.position = (self.position + amount) % Self::DIAL_POSITIONS;
-
-        // Increment zero count for each full rotation of the dial
-        self.zero_count += amount / Self::DIAL_POSITIONS;
-
-        // Calculate the remaining amount to move the dial
-        let remaing_amount = amount % Self::DIAL_POSITIONS;
-
-        // If the remainder moves the dial past 0, increment the zero count
-        if (prev_position + remaing_amount) >= Self::DIAL_POSITIONS {
-            self.zero_count += 1;
-        }
-    }
-
-    fn left_rotate(&mut self, amount : i32) {
-        assert!(amount != 0, "amount 0!");
-
-        let prev_position = self.position;
-
-        // Update the dial position
-        self.position = (self.position - amount) % Self::DIAL_POSITIONS;
 
         if self.position < 0 {
             self.position = Self::DIAL_POSITIONS + self.position;
@@ -77,9 +57,14 @@ impl DialPt2 {
         // Calculate the remaining amount to move the dial
         let remaining_amount = amount % Self::DIAL_POSITIONS;
 
-        // If the remainder moves the dial past 0, increment the zero count
-        if (prev_position - remaining_amount) < 0 {
+        // If the remainder moves the dial past 0 in either direction, 
+        // increment the zero count
+        if (prev_position + remaining_amount) >= Self::DIAL_POSITIONS {
             self.zero_count += 1;
+        } else if (prev_position + remaining_amount) < 0 {
+            self.zero_count += 1;
+        } else {
+            // value did not pass 0, do nothing
         }
     }
 }
@@ -98,11 +83,11 @@ fn main() {
         if line.starts_with("R") {
             let right_code: i32 = line[1..].parse().expect(&format!("code not found! {index}"));
             dial.rotate(right_code);
-            dial_pt2.right_rotate(right_code);
+            dial_pt2.rotate(right_code);
         } else if line.starts_with("L") {
             let left_code: i32 = line[1..].parse().expect(&format!("code not found! {index}"));
             dial.rotate(-left_code);
-            dial_pt2.left_rotate(left_code);
+            dial_pt2.rotate(-left_code);
         } else if line.is_empty() {
             // ignore empty
         } else {
