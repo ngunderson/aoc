@@ -54,26 +54,30 @@ impl DialPt2 {
         // Increment zero count for each full rotation of the dial
         self.zero_count += amount.abs() / Self::DIAL_POSITIONS;
 
-        // Calculate the remaining amount to move the dial
+        // Calculate the remaining amount to see if the dial passes 0 more
         let remaining_amount = amount % Self::DIAL_POSITIONS;
 
-        // If the remainder moves the dial to or past 0 in either direction, 
-        // increment the zero count
-        if (prev_position + remaining_amount) >= Self::DIAL_POSITIONS {
+        // TODO: Set overflow bool above for more clarity?
+
+        if remaining_amount == 0 {
+            // do nothing with no remainder
+        } else if remaining_amount > 0 
+            && ((prev_position + remaining_amount) >= Self::DIAL_POSITIONS) {
             // Positive remaining amount went past or to 0
             self.zero_count += 1;
-        } 
-        else if prev_position != 0 && ((prev_position + remaining_amount) <= 0) {
-            // Negative remaining amount, increment for scenarios such as
+        } else if remaining_amount < 0 
+            && prev_position != 0
+            && (prev_position + remaining_amount) <= 0 {
+            // Similar check is (remaining_amount.abs() >= prev_position)
+            // Negative remaining amount, increment for scenarios
+            // where 0 is reached or passed
             // Position 0, L20, prev + remainder = -20
             // Position 10, L20, prev + remainder = -10
             // Position 20, L20, prev + remainder = 0
             self.zero_count += 1;
-        } else {
-            // value did not pass 0, do nothing
         }
 
-        //println!("amount({}), prev({}), new({}), cnt({})", amount, prev_position, self.position, self.zero_count);
+        println!("amount({}), prev({}), new({}), cnt({})", amount, prev_position, self.position, self.zero_count);
     }
 }
 
