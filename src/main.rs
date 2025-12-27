@@ -52,7 +52,7 @@ impl DialPt2 {
         }
 
         // Increment zero count for each full rotation of the dial
-        self.zero_count += amount / Self::DIAL_POSITIONS;
+        self.zero_count += amount.abs() / Self::DIAL_POSITIONS;
 
         // Calculate the remaining amount to move the dial
         let remaining_amount = amount % Self::DIAL_POSITIONS;
@@ -60,8 +60,14 @@ impl DialPt2 {
         // If the remainder moves the dial to or past 0 in either direction, 
         // increment the zero count
         if (prev_position + remaining_amount) >= Self::DIAL_POSITIONS {
+            // Positive remaining amount went past or to 0
             self.zero_count += 1;
-        } else if (prev_position + remaining_amount) <= 0 {
+        } 
+        else if prev_position != 0 && ((prev_position + remaining_amount) <= 0) {
+            // Negative remaining amount, increment for scenarios such as
+            // Position 0, L20, prev + remainder = -20
+            // Position 10, L20, prev + remainder = -10
+            // Position 20, L20, prev + remainder = 0
             self.zero_count += 1;
         } else {
             // value did not pass 0, do nothing
