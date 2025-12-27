@@ -14,16 +14,12 @@ impl Dial {
 
     const DIAL_POSITIONS : i32 = 100;
 
-    fn right_rotate(&mut self, amount : i32) {
+    fn rotate(&mut self, amount : i32) {
         self.position = (self.position + amount) % Self::DIAL_POSITIONS;
-    }
-
-    fn left_rotate(&mut self, amount : i32) {
-        self.position = (self.position - amount) % Self::DIAL_POSITIONS;
 
         if self.position < 0 {
             self.position = Self::DIAL_POSITIONS + self.position;
-        }
+        }        
     }
 }
 
@@ -101,11 +97,11 @@ fn main() {
     for (index, line) in rotation_codes.lines().enumerate() {
         if line.starts_with("R") {
             let right_code: i32 = line[1..].parse().expect(&format!("code not found! {index}"));
-            dial.right_rotate(right_code);
+            dial.rotate(right_code);
             dial_pt2.right_rotate(right_code);
         } else if line.starts_with("L") {
             let left_code: i32 = line[1..].parse().expect(&format!("code not found! {index}"));
-            dial.left_rotate(left_code);
+            dial.rotate(-left_code);
             dial_pt2.left_rotate(left_code);
         } else if line.is_empty() {
             // ignore empty
