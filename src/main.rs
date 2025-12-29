@@ -57,16 +57,16 @@ impl DialPt2 {
         // Calculate the remaining amount to see if the dial passes 0 more
         let remaining_amount = amount % Self::DIAL_POSITIONS;
 
-        // TODO: Set overflow bool above for more clarity?
-
-        if remaining_amount == 0 {
+        if prev_position == 0 {
+            // If we currently sit at 0, the remainder, which we know is less
+            // than 100, will no make us reach zero again.
+        } else if remaining_amount == 0 {
             // do nothing with no remainder
         } else if remaining_amount > 0 
             && ((prev_position + remaining_amount) >= Self::DIAL_POSITIONS) {
             // Positive remaining amount went past or to 0
             self.zero_count += 1;
         } else if remaining_amount < 0 
-            && prev_position != 0
             && (prev_position + remaining_amount) <= 0 {
             // Similar check is (remaining_amount.abs() >= prev_position)
             // Negative remaining amount, increment for scenarios
@@ -77,7 +77,7 @@ impl DialPt2 {
             self.zero_count += 1;
         }
 
-        println!("amount({}), prev({}), new({}), cnt({})", amount, prev_position, self.position, self.zero_count);
+        //println!("amount({}), prev({}), new({}), cnt({})", amount, prev_position, self.position, self.zero_count);
     }
 }
 
