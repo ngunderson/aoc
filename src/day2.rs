@@ -1,6 +1,24 @@
 use std::fs;
 
-fn is_invalid(_id: &String) -> bool {
+fn is_odd(num: i32) -> bool
+{
+    (num % 2) != 0
+}
+
+fn is_invalid(id: &String) -> bool {
+    // From the description,
+    // "...you can find the invalid IDs by looking for any ID
+    // which is made only of some sequence of digits repeated twice"
+
+    let id_len: i32 = id.len().try_into().expect("String shouldn't be this long!");
+    if is_odd(id_len) {
+        // Any odd ID, cannot be made of a sequence repeated twice
+        // and will never be invalid.
+        return false;
+    }
+
+    let (_first, _last) = id.split_at(id.len() / 2);
+
     false
 }
 
