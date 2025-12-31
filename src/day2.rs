@@ -5,7 +5,7 @@ fn is_odd(num: i32) -> bool
     (num % 2) != 0
 }
 
-fn is_invalid(id: &String) -> bool {
+fn is_valid(id: &String) -> bool {
     // From the description,
     // "...you can find the invalid IDs by looking for any ID
     // which is made only of some sequence of digits repeated twice"
@@ -14,12 +14,12 @@ fn is_invalid(id: &String) -> bool {
     if is_odd(id_len) {
         // Any odd ID, cannot be made of a sequence repeated twice
         // and will never be invalid.
-        return false;
+        return true;
     }
 
     let (_first, _last) = id.split_at(id.len() / 2);
 
-    false
+    true
 }
 
 pub(crate) fn day2() {
@@ -49,7 +49,7 @@ pub(crate) fn day2() {
 
             let id: String = id.to_string();
 
-            if is_invalid(&id) {
+            if !is_valid(&id) {
                 let id: i32 = id
                     .parse()
                     .expect("conversion back failed!?");
