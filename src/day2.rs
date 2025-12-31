@@ -11,13 +11,18 @@ fn is_valid(id: &String) -> bool {
     // which is made only of some sequence of digits repeated twice"
 
     let id_len: i32 = id.len().try_into().expect("String shouldn't be this long!");
+
     if is_odd(id_len) {
         // Any odd ID, cannot be made of a sequence repeated twice
         // and will never be invalid.
         return true;
-    }
+    } else {
+        let (first, last) = id.split_at(id.len() / 2);
 
-    let (_first, _last) = id.split_at(id.len() / 2);
+        if first == last {
+            return false;
+        }
+    }
 
     true
 }
