@@ -1,40 +1,33 @@
 use std::fs;
 
-struct Dial
-{
-    position : i32,
+struct Dial {
+    position: i32,
 }
 
 impl Dial {
     fn new() -> Dial {
-        return Dial {
-            position : 50
-        };
+        return Dial { position: 50 };
     }
 
-    const DIAL_POSITIONS : i32 = 100;
+    const DIAL_POSITIONS: i32 = 100;
 
-    fn rotate(&mut self, amount : i32) {
+    fn rotate(&mut self, amount: i32) {
         self.position = (self.position + amount) % Self::DIAL_POSITIONS;
 
         if self.position < 0 {
             self.position = Self::DIAL_POSITIONS + self.position;
-        }        
+        }
     }
 }
 
 // Return 1 if the dial is positioned at 0
 fn part1_strategy_iteration(dial: &Dial) -> i32 {
-    if dial.position == 0 {
-        1
-    } else {
-        0
-    }
+    if dial.position == 0 { 1 } else { 0 }
 }
 
 // Count the number of times the amount causes the dial
 // to point to 0 at an point during the rotation.
-fn part2_strategy_iteration(dial: &Dial, amount : i32) -> i32 {
+fn part2_strategy_iteration(dial: &Dial, amount: i32) -> i32 {
     assert!(amount != 0, "amount 0!");
 
     let mut zero_count = 0;
@@ -50,12 +43,10 @@ fn part2_strategy_iteration(dial: &Dial, amount : i32) -> i32 {
         // than 100, will no make us reach zero again.
     } else if remaining_amount == 0 {
         // do nothing with no remainder
-    } else if remaining_amount > 0 
-        && ((dial.position + remaining_amount) >= Dial::DIAL_POSITIONS) {
+    } else if remaining_amount > 0 && ((dial.position + remaining_amount) >= Dial::DIAL_POSITIONS) {
         // Positive remaining amount went past or to 0
         zero_count += 1;
-    } else if remaining_amount < 0 
-        && (dial.position + remaining_amount) <= 0 {
+    } else if remaining_amount < 0 && (dial.position + remaining_amount) <= 0 {
         // Similar check is (remaining_amount.abs() >= dial.position)
         // Negative remaining amount, increment for scenarios
         // where 0 is reached or passed
@@ -72,13 +63,8 @@ fn part2_strategy_iteration(dial: &Dial, amount : i32) -> i32 {
 
 fn main() {
     println!("===Day 1!===");
-        
-    let rotation_codes = 
-        fs::read_to_string(
-            concat!(
-                env!(
-                    "CARGO_MANIFEST_DIR"),
-                     "/real.txt"))
+
+    let rotation_codes = fs::read_to_string(concat!(env!("CARGO_MANIFEST_DIR"), "/real.txt"))
         .expect("file not read!");
 
     let mut dial = Dial::new();
@@ -89,10 +75,14 @@ fn main() {
         #[allow(unused_assignments)]
         let mut amount_to_rotate = 0;
         if line.starts_with("R") {
-            let right_code: i32 = line[1..].parse().expect(&format!("code not found! {index}"));
-            amount_to_rotate = right_code;          
+            let right_code: i32 = line[1..]
+                .parse()
+                .expect(&format!("code not found! {index}"));
+            amount_to_rotate = right_code;
         } else if line.starts_with("L") {
-            let left_code: i32 = line[1..].parse().expect(&format!("code not found! {index}"));
+            let left_code: i32 = line[1..]
+                .parse()
+                .expect(&format!("code not found! {index}"));
             amount_to_rotate = -left_code;
         } else if line.is_empty() {
             // ignore empty

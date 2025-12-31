@@ -1,7 +1,6 @@
 use std::fs;
 
-fn is_odd(num: i64) -> bool
-{
+fn is_odd(num: i64) -> bool {
     (num % 2) != 0
 }
 
@@ -28,10 +27,9 @@ fn is_valid_part1(id: &String) -> bool {
 }
 
 fn is_valid_part2(id: &String) -> bool {
-
     // Iterate through possible digit sequences. The Sequence cannot be
     // greater than half the length since it has to be repeated at least twice.
-    for len in 1..=(id.len()/2) {
+    for len in 1..=(id.len() / 2) {
         let digit_sequence = id.get(0..len).expect("String length invalid!");
 
         if id.len() % digit_sequence.len() != 0 {
@@ -53,12 +51,7 @@ fn is_valid_part2(id: &String) -> bool {
 fn main() {
     println!("===Day 2!===");
 
-    let input =        
-        fs::read_to_string(
-            concat!(
-                env!(
-                    "CARGO_MANIFEST_DIR"),
-                     "/real.txt"))
+    let input = fs::read_to_string(concat!(env!("CARGO_MANIFEST_DIR"), "/real.txt"))
         .expect("file not read!");
     let input = input.trim();
 
@@ -69,10 +62,7 @@ fn main() {
     for range in input.split(",") {
         let range: Vec<i64> = range
             .split("-")
-            .map(|s|
-                s
-                    .parse()
-                    .expect(&format!("Failed to convert! {s}")))
+            .map(|s| s.parse().expect(&format!("Failed to convert! {s}")))
             .collect();
 
         assert!(range.len() == 2, "Range not size 2!");
@@ -85,9 +75,7 @@ fn main() {
             let id: String = id.to_string();
 
             if !is_valid_part1(&id) {
-                let id: i64 = id
-                    .parse()
-                    .expect("conversion back failed!?");
+                let id: i64 = id.parse().expect("conversion back failed!?");
 
                 //println!("part1 invalid! {id}");
 
@@ -95,9 +83,7 @@ fn main() {
             }
 
             if !is_valid_part2(&id) {
-                let id: i64 = id
-                    .parse()
-                    .expect("conversion back failed!?");
+                let id: i64 = id.parse().expect("conversion back failed!?");
 
                 //println!("part2 invalid! {id}");
 

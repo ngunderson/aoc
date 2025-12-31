@@ -1,13 +1,7 @@
 use std::fs;
 
-fn read_file(name: &str) -> String
-{
-    let input = 
-        fs::read_to_string(
-            format!(
-                "{}/{}",
-                env!("CARGO_MANIFEST_DIR"),
-                name))
+fn read_file(name: &str) -> String {
+    let input = fs::read_to_string(format!("{}/{}", env!("CARGO_MANIFEST_DIR"), name))
         .expect("file not read!");
     input.trim().to_string()
 }
@@ -24,10 +18,10 @@ fn main() {
         // Then combine the two chars and add to running total
 
         for battery in battery_bank.chars() {
-            assert!(('0' <= battery) && (battery <= '9'),
-              "Battery not in range! ({battery})");
-
-            
+            assert!(
+                ('0' <= battery) && (battery <= '9'),
+                "Battery not in range! ({battery})"
+            );
         }
     }
 }
