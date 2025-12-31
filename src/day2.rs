@@ -50,7 +50,7 @@ pub(crate) fn day2() {
         //println!("{} to {}", range[0], range[1]);
 
         for id in range[0]..=range[1] {
-            println!("id {id}");
+            // println!("id {id}");
 
             let id: String = id.to_string();
 
@@ -59,7 +59,7 @@ pub(crate) fn day2() {
                     .parse()
                     .expect("conversion back failed!?");
 
-                println!("invalid! {id}");
+                // println!("invalid! {id}");
 
                 invalid_sum = invalid_sum.strict_add(id);
             }
