@@ -70,10 +70,15 @@ fn part2_strategy_iteration(dial: &Dial, amount : i32) -> i32 {
     zero_count
 }
 
-pub(crate) fn day1() {
+fn main() {
     println!("===Day 1!===");
         
-    let rotation_codes = fs::read_to_string("input/day1/real.txt")
+    let rotation_codes = 
+        fs::read_to_string(
+            concat!(
+                env!(
+                    "CARGO_MANIFEST_DIR"),
+                     "/real.txt"))
         .expect("file not read!");
 
     let mut dial = Dial::new();

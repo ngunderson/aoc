@@ -50,10 +50,15 @@ fn is_valid_part2(id: &String) -> bool {
     true
 }
 
-pub(crate) fn day2() {
+fn main() {
     println!("===Day 2!===");
 
-    let input = fs::read_to_string("input/day2/real.txt")
+    let input =        
+        fs::read_to_string(
+            concat!(
+                env!(
+                    "CARGO_MANIFEST_DIR"),
+                     "/real.txt"))
         .expect("file not read!");
     let input = input.trim();
 
