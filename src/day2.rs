@@ -1,6 +1,6 @@
 use std::fs;
 
-fn is_odd(num: i32) -> bool
+fn is_odd(num: i64) -> bool
 {
     (num % 2) != 0
 }
@@ -10,7 +10,7 @@ fn is_valid(id: &String) -> bool {
     // "...you can find the invalid IDs by looking for any ID
     // which is made only of some sequence of digits repeated twice"
 
-    let id_len: i32 = id.len().try_into().expect("String shouldn't be this long!");
+    let id_len: i64 = id.len().try_into().expect("String shouldn't be this long!");
 
     if is_odd(id_len) {
         // Any odd ID, cannot be made of a sequence repeated twice
@@ -30,14 +30,14 @@ fn is_valid(id: &String) -> bool {
 pub(crate) fn day2() {
     println!("===Day 2!===");
 
-    let input = fs::read_to_string("day2_sample_input.txt")
+    let input = fs::read_to_string("day2_input.txt")
         .expect("file not read!");
     let input = input.trim();
 
-    let mut invalid_sum: i32 = 0;
+    let mut invalid_sum: i64 = 0;
 
     for range in input.split(",") {
-        let range: Vec<i32> = range
+        let range: Vec<i64> = range
             .split("-")
             .map(|s| 
                 s
@@ -55,11 +55,11 @@ pub(crate) fn day2() {
             let id: String = id.to_string();
 
             if !is_valid(&id) {
-                let id: i32 = id
+                let id: i64 = id
                     .parse()
                     .expect("conversion back failed!?");
 
-                // println!("invalid! {id}");
+                //println!("invalid! {id}");
 
                 invalid_sum = invalid_sum.strict_add(id);
             }
