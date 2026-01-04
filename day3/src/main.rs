@@ -37,7 +37,7 @@ fn second_battery(battery_bank: &str, first_index: usize) -> char {
 fn main() {
     println!("===Day 3!===");
 
-    let input = read_file("example.txt");
+    let input = read_file("real.txt");
 
     let mut part1_sum = 0;
 
@@ -53,7 +53,7 @@ fn main() {
         let max_joltage = (first_val.to_digit(10).expect("first invalid!") * 10)
             + second_battery.to_digit(10).expect("second invalid!");
 
-        println!("line is ({battery_bank}), max ({max_joltage})");
+        //println!("line is ({battery_bank}), max ({max_joltage})");
 
         part1_sum += max_joltage;
     }
