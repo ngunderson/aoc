@@ -35,6 +35,7 @@ fn second_battery(battery_bank: &str, first_index: usize) -> char {
 }
 
 fn find_max(battery_bank: &str, previous_index: Option<usize>, digit_position: u8) -> (usize, u32) {
+    println!("prev indx {}", previous_index.unwrap_or_default());
     // Start the search right after the previously identified largest number
     // Also ignore the last digits which are smaller than the digit position
     // we're searching for.
@@ -60,9 +61,10 @@ fn find_max(battery_bank: &str, previous_index: Option<usize>, digit_position: u
             max_battery_index = Some(index);
         }
     }
-    //println!("{} found for {}", max_battery, slice_to_search);
+
+    println!("{} found for {}", max_battery, slice_to_search);
     (
-        max_battery_index.expect("max not found!"),
+        max_battery_index.unwrap() + start_index,
         max_battery.to_digit(10).unwrap(),
     )
 }
@@ -80,7 +82,7 @@ fn highest_n_digit_joltage(battery_bank: &str, num_digits: u8) -> u64 {
 
         max_joltage = max_joltage + (u64::from(value) * 10_u64.pow(u32::from(digit_position) - 1));
     }
-    //println!("Joltage found ({max_joltage})");
+    println!("Joltage found ({max_joltage}) for {battery_bank}");
 
     max_joltage
 }
@@ -88,7 +90,7 @@ fn highest_n_digit_joltage(battery_bank: &str, num_digits: u8) -> u64 {
 fn main() {
     println!("===Day 3!===");
 
-    let input = read_file("real.txt");
+    let input = read_file("example.txt");
 
     let mut part1_sum: u64 = 0;
     let mut part2_sum: u64 = 0;
@@ -109,7 +111,7 @@ fn main() {
 
         part1_sum += u64::from(max_joltage);
 
-        part2_sum += highest_n_digit_joltage(battery_bank, 2);
+        part2_sum += highest_n_digit_joltage(battery_bank, 12);
     }
 
     println!("Part1 sum ({part1_sum})");
