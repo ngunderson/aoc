@@ -40,7 +40,7 @@ fn part2_strategy_iteration(dial: &Dial, amount: i32) -> i32 {
 
     if dial.position == 0 {
         // If we currently sit at 0, the remainder, which we know is less
-        // than 100, will no make us reach zero again.
+        // than 100, will not make us reach zero again.
     } else if remaining_amount == 0 {
         // do nothing with no remainder
     } else if remaining_amount > 0 && ((dial.position + remaining_amount) >= Dial::DIAL_POSITIONS) {
@@ -50,7 +50,6 @@ fn part2_strategy_iteration(dial: &Dial, amount: i32) -> i32 {
         // Similar check is (remaining_amount.abs() >= dial.position)
         // Negative remaining amount, increment for scenarios
         // where 0 is reached or passed
-        // Position 0, L20, prev + remainder = -20
         // Position 10, L20, prev + remainder = -10
         // Position 20, L20, prev + remainder = 0
         zero_count += 1;
