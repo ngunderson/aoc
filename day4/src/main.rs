@@ -67,10 +67,7 @@ fn get_adjacent_num_rolls((row, col): (usize, usize), grid: &CharGrid) -> u32 {
     adjacent_rolls
 }
 
-fn main() {
-    let input = read_file("real.txt");
-
-    let grid = create_grid(&input);
+fn part1(grid: CharGrid) {
     let mut part1_accessible_roll_count = 0;
 
     for (row_index, row) in grid.iter().enumerate() {
@@ -85,4 +82,11 @@ fn main() {
     }
 
     println!("part 1 roll count {part1_accessible_roll_count}");
+}
+
+fn main() {
+    let input = read_file("real.txt");
+    let grid = create_grid(&input);
+
+    part1(grid.clone());
 }
