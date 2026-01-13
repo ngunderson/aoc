@@ -67,26 +67,51 @@ fn get_adjacent_num_rolls((row, col): (usize, usize), grid: &CharGrid) -> u32 {
     adjacent_rolls
 }
 
-fn part1(grid: CharGrid) {
-    let mut part1_accessible_roll_count = 0;
+fn part1_get_accessible_rolls(grid: &CharGrid) -> Vec<(usize, usize)> {
+    let mut accessible_rolls = Vec::new();
 
     for (row_index, row) in grid.iter().enumerate() {
         for (column_index, value) in row.iter().enumerate() {
             if *value == PAPER_ROLL && get_adjacent_num_rolls((row_index, column_index), &grid) < 4
             {
-                part1_accessible_roll_count += 1;
+                accessible_rolls.push((row_index, column_index));
             }
-            //print!("{value}");
         }
-        //println!();
     }
 
-    println!("part 1 roll count {part1_accessible_roll_count}");
+    accessible_rolls
+}
+
+fn remove_rolls_from_grid(positions: &Vec<(usize, usize)>, grid: &mut CharGrid) {
+    for (row, col) in positions {
+        // Set to X to indicate removed (anything not @ will work)
+        grid[*row][*col] = 'X';
+    }
+}
+
+fn part2(grid: &mut CharGrid) -> usize {
+    let mut part2_accessible_roll_count = 0;
+
+    let mut accessible_rolls = part1_get_accessible_rolls(&grid);
+
+    while accessible_rolls.len() > 0 {
+        part2_accessible_roll_count += accessible_rolls.len();
+
+        remove_rolls_from_grid(&accessible_rolls, grid);
+
+        accessible_rolls = part1_get_accessible_rolls(&grid);
+    }
+
+    part2_accessible_roll_count
 }
 
 fn main() {
     let input = read_file("real.txt");
-    let grid = create_grid(&input);
+    let mut grid = create_grid(&input);
 
-    part1(grid.clone());
+    let part1_accessible_rolls = part1_get_accessible_rolls(&grid);
+    println!("part1: {}", part1_accessible_rolls.len());
+
+    let part2_removed_rolls = part2(&mut grid);
+    println!("part2: {}", part2_removed_rolls);
 }
