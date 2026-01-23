@@ -17,11 +17,7 @@ impl Range {
     }
 }
 
-fn main() {
-    println!("day 5!");
-
-    let input = read_file("example.txt");
-
+fn part1(input: &str) {
     let mut ranges = Vec::new();
     let mut first_half = true;
     let mut fresh_ingredient_count = 0;
@@ -41,11 +37,19 @@ fn main() {
         } else {
             let ingredient_id: u64 = line.parse().unwrap();
             let fresh = ranges.iter().any(|range| range.contains(ingredient_id));
-	    if fresh {
-	       fresh_ingredient_count += 1;
-	    }
+            if fresh {
+                fresh_ingredient_count += 1;
+            }
         }
     }
 
     println!("part1, fresh ingredient count: {fresh_ingredient_count}");
+}
+
+fn main() {
+    println!("day 5!");
+
+    let input = read_file("real.txt");
+
+    part1(&input);
 }
