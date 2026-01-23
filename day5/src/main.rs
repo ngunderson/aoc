@@ -1,4 +1,5 @@
 use std::fs;
+use std::collections::HashSet;
 
 fn read_file(name: &str) -> String {
     let input = fs::read_to_string(format!("{}/{}", env!("CARGO_MANIFEST_DIR"), name))
@@ -48,4 +49,14 @@ fn main() {
     }
 
     println!("part1, fresh ingredient count: {fresh_ingredient_count}");
+
+    let mut set = HashSet::new();
+
+    for range in ranges {
+    	for id in range.first..=range.second {
+	    set.insert(id);
+	}
+    }
+
+    println!("part2, fresh ingredient ids: {}", set.len());
 }
