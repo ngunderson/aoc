@@ -16,6 +16,26 @@ impl Range {
     fn contains(&self, num: u64) -> bool {
         return (num >= self.first) && (num <= self.second);
     }
+
+    fn len(&self) -> u64 {
+       if self.first == self.second {
+          return 1;
+       }
+       self.second - self.first + 1
+    }
+}
+
+// A \ B
+// Return the items in `a` that aren't in `b`
+fn set_difference(a: &Range, b: &Range) -> Option<Range> {
+   // options.. 
+   // - no overlap, return a
+   // -
+   // [1, 3] \ [5, 6] = [1, 3]
+   // [1, 3] \ [2, 4] = [1]
+   // [1, 4] \ [3, 4] = [1, 2]
+   // [6, 9] \ [3, 7] = [8, 9]
+   None
 }
 
 fn main() {
@@ -50,13 +70,15 @@ fn main() {
 
     println!("part1, fresh ingredient count: {fresh_ingredient_count}");
 
-    let mut set = HashSet::new();
+    let mut unique_ranges: Vec<Range> = Vec::new();
 
     for range in ranges {
-    	for id in range.first..=range.second {
-	    set.insert(id);
+    	if unique_ranges.len() == 0 {
+	   unique_ranges.push(range);
+	} else {
+	   
 	}
     }
 
-    println!("part2, fresh ingredient ids: {}", set.len());
+    println!("part2, fresh ingredient ids: ");
 }
