@@ -29,6 +29,36 @@ impl Range {
     }
 }
 
+struct RangeSet {
+    set: Vec<Range>,
+}
+
+impl RangeSet {
+    fn push(&mut self, range: Range) {
+        if self.set.len() == 0 {
+            self.set.push(range);
+        } else {
+            // Compare the range to the existing set to only
+            // add unique elements from the range.
+            let mut new_ranges = Vec::new();
+            new_ranges.push(range);
+            for unique_range in &self.set {
+                new_ranges = range_set_difference(&new_ranges, &unique_range);
+
+                // If the range has no unique elements left, stop
+                // comparing against the other unique ranges
+                if new_ranges.is_empty() {
+                    break;
+                }
+            }
+            // Add any remaining, unique ranges to the unique_range
+            for range in new_ranges {
+                self.set.push(range);
+            }
+        }
+    }
+}
+
 fn set_intersects(a: &Range, b: &Range) -> bool {
     // a is within b or b is within a
     a.contains(b.first) || a.contains(b.second) || b.contains(a.first) || b.contains(a.second)
@@ -132,10 +162,10 @@ fn main() {
 
         if first_half {
             let numbers: Vec<_> = line.split('-').collect();
-            ranges.push(Range {
-                first: numbers[0].parse().unwrap(),
-                second: numbers[1].parse().unwrap(),
-            });
+            ranges.push(Range::new(
+                numbers[0].parse().unwrap(),
+                numbers[1].parse().unwrap(),
+            ));
         } else {
             let ingredient_id: u64 = line.parse().unwrap();
             let fresh = ranges.iter().any(|range| range.contains(ingredient_id));
@@ -147,33 +177,14 @@ fn main() {
 
     println!("part1, fresh ingredient count: {fresh_ingredient_count}");
 
-    let mut unique_ranges: Vec<Range> = Vec::new();
+    let mut range_set = RangeSet { set: Vec::new() };
 
     for range in ranges {
-        if unique_ranges.len() == 0 {
-            unique_ranges.push(range);
-        } else {
-            // for each unique range
-            //   range \ unique range
-            let mut range_vec = Vec::new();
-            range_vec.push(range);
-            for unique_range in &unique_ranges {
-                range_vec = range_set_difference(&range_vec, &unique_range);
-
-                // If the range has no unique elements left, stop
-                // comparing against the other unique ranges
-                if range_vec.is_empty() {
-                    break;
-                }
-            }
-            for range in range_vec {
-                unique_ranges.push(range);
-            }
-        }
+        range_set.push(range);
     }
 
     let mut sum_of_ids: u64 = 0;
-    for range in unique_ranges {
+    for range in range_set.set {
         sum_of_ids = sum_of_ids + range.len();
     }
 
